@@ -1,4 +1,4 @@
-import {StyleSheet, View, ScrollView, TextInput, Pressable, Text} from 'react-native';
+import {StyleSheet, View, ScrollView, TextInput, Pressable, Text, Alert} from 'react-native';
 import Task from "./assets/components/task";
 import {useState} from "react";
 
@@ -19,6 +19,24 @@ export default function App() {
         console.log(tasks);
     }
 
+    // Удаление задачи из списка
+    const removeTask = (id) => {
+        Alert.alert(
+            "Удалить задачу?",
+            "Действительно удалить?",
+            [
+                {text: 'Нет'},
+                {text: 'Да', onPress: () => {
+                        setlistOfTasks(
+                            tasks.filter((task) => task.id !== id)
+                        )
+                    }
+                }
+            ]
+        )
+    }
+
+    // Изменение статуса задачи
     const changeStatus = (id) => {
         setlistOfTasks(
             tasks.map((task) => {
@@ -47,6 +65,7 @@ export default function App() {
                         title={task.title}
                         status={task.status}
                         onToggle={() => changeStatus(task.id)}
+                        handleLongPress={()=> removeTask(task.id)}
                     />
                 ))}
 

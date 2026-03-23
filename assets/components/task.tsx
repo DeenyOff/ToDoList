@@ -1,8 +1,11 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
+import {StyleSheet, Text, View, Pressable} from 'react-native';
 
-export default function Task({ title, onToggle, status }) {
+export default function Task({ title, onToggle, handleLongPress,status }) {
     return (
-        <Pressable style={styles.task}>
+        <Pressable
+            style={styles.task}
+            onLongPress={handleLongPress}
+        >
             <View style={styles.leftSection}>
                 <Text style={[styles.text, status===true && styles.textDone]}>{title}</Text>
             </View>
