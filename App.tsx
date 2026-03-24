@@ -16,7 +16,6 @@ export default function App() {
 
         ]);
         setInputText('');//Очистка поля ввода после добавленного задания
-        console.log(tasks);
     }
 
     // Удаление задачи из списка
@@ -52,6 +51,20 @@ export default function App() {
     }
 
 
+    const [filterValue, setFilterValue] = useState('all')
+    // У меня будет переменная которая будет уже хранить в себе отфильтрованный список.
+    let filteredTasks = tasks
+
+    if (filterValue === 'completed') {
+        filteredTasks = tasks.filter(task => task.status)
+    }
+
+    if (filterValue === 'uncompleted') {
+        filteredTasks = tasks.filter(task => !task.status)
+    }
+
+
+
     return (
         <View style={styles.container}>
 
@@ -59,7 +72,8 @@ export default function App() {
             <ScrollView contentContainerStyle={styles.scrollContent}>
 
                 {/*Автономный вывод всего списка. Написан в {} так как TSX/JSX не воспринимает js код без скобок*/}
-                {tasks.map((task) => (
+                {/*сначала был tasks, теперь стал filtredTasks т.к мы выводим переменную в которой уже отфильтрованный список*/}
+                {filteredTasks.map((task) => (
                     <Task
                         key={task.id}
                         title={task.title}
@@ -88,16 +102,16 @@ export default function App() {
                 </View>
 
                 <View style={styles.bottomMenuButtons}>
-                    <Pressable style={[styles.menuButton, styles.menuButtonActive]}>
+                    <Pressable style={[styles.menuButton, styles.menuButtonActive]} onPress={()=> setFilterValue('all')}>
                         <Text style={[styles.menuButtonText, styles.menuButtonTextActive]}> Общий </Text>
                     </Pressable>
 
-                    <Pressable style={styles.menuButton}>
-                        <Text style={styles.menuButtonText}>Сделанные</Text>
+                    <Pressable style={styles.menuButton} onPress={()=> setFilterValue('completed')}>
+                        <Text style={styles.menuButtonText}>Выполненные</Text>
                     </Pressable>
 
-                    <Pressable style={styles.menuButton}>
-                        <Text style={styles.menuButtonText}>Планы</Text>
+                    <Pressable style={styles.menuButton} onPress={()=> setFilterValue('uncompleted')}>
+                        <Text style={styles.menuButtonText}>Невыполненные</Text>
                     </Pressable>
                 </View>
 
