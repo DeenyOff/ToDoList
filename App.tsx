@@ -68,6 +68,10 @@ export default function App() {
     return (
         <View style={styles.container}>
 
+            <View style={[sty]} >
+                <Text>sdfsdfsdfsdf</Text>
+            </View>
+
             {/*Список*/}
             <ScrollView contentContainerStyle={styles.scrollContent}>
 
@@ -102,16 +106,16 @@ export default function App() {
                 </View>
 
                 <View style={styles.bottomMenuButtons}>
-                    <Pressable style={[styles.menuButton, styles.menuButtonActive]} onPress={()=> setFilterValue('all')}>
-                        <Text style={[styles.menuButtonText, styles.menuButtonTextActive]}> Общий </Text>
+                    <Pressable style={[styles.menuButton, filterValue === 'all' && styles.menuButtonActive]} onPress={()=> setFilterValue('all')}>
+                        <Text style={[styles.menuButtonText, filterValue === 'all' && styles.menuButtonTextActive]}> Общий </Text>
                     </Pressable>
 
-                    <Pressable style={styles.menuButton} onPress={()=> setFilterValue('completed')}>
-                        <Text style={styles.menuButtonText}>Выполненные</Text>
+                    <Pressable style={[styles.menuButton, filterValue === 'completed' && styles.menuButtonActive]} onPress={()=> setFilterValue('completed')}>
+                        <Text style={[styles.menuButtonText, filterValue ==='completed' && styles.menuButtonTextActive]}>Выполненные</Text>
                     </Pressable>
 
-                    <Pressable style={styles.menuButton} onPress={()=> setFilterValue('uncompleted')}>
-                        <Text style={styles.menuButtonText}>Невыполненные</Text>
+                    <Pressable style={[styles.menuButton, filterValue === 'uncompleted' && styles.menuButtonActive]} onPress={()=> setFilterValue('uncompleted')}>
+                        <Text style={[styles.menuButtonText, filterValue ==='uncompleted' && styles.menuButtonTextActive]}>Невыполненные</Text>
                     </Pressable>
                 </View>
 
