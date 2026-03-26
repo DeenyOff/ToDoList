@@ -1,6 +1,8 @@
 import {StyleSheet, View, ScrollView, TextInput, Pressable, Text, Alert} from 'react-native';
 import Task from "./assets/components/task";
 import {useState} from "react";
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+
 
 export default function App() {
     const [tasks, setlistOfTasks] = useState([])
@@ -68,10 +70,6 @@ export default function App() {
     return (
         <View style={styles.container}>
 
-            <View style={[sty]} >
-                <Text>sdfsdfsdfsdf</Text>
-            </View>
-
             {/*Список*/}
             <ScrollView contentContainerStyle={styles.scrollContent}>
 
@@ -89,6 +87,38 @@ export default function App() {
 
             </ScrollView>
 
+            {/* Панель фильтров */}
+            <View style={styles.filterBar}>
+                <View style={styles.bottomMenuButtons}>
+                    <Pressable
+                        style={[styles.menuButton, filterValue === 'all' && styles.menuButtonAll]}
+                        onPress={() => setFilterValue('all')}
+                    >
+                        <Text style={[styles.menuButtonText, filterValue === 'all' && styles.menuButtonTextActive]}>
+                            Все
+                        </Text>
+                    </Pressable>
+
+                    <Pressable
+                        style={[styles.menuButton, filterValue === 'completed' && styles.menuButtonCompleted]}
+                        onPress={() => setFilterValue('completed')}
+                    >
+                        <Text style={[styles.menuButtonText, filterValue === 'completed' && styles.menuButtonTextActive]}>
+                            Выполнено
+                        </Text>
+                    </Pressable>
+
+                    <Pressable
+                        style={[styles.menuButton, filterValue === 'uncompleted' && styles.menuButtonUncompleted]}
+                        onPress={() => setFilterValue('uncompleted')}
+                    >
+                        <Text style={[styles.menuButtonText, filterValue === 'uncompleted' && styles.menuButtonTextActive]}>
+                            Не выполнено
+                        </Text>
+                    </Pressable>
+                </View>
+            </View>
+
             {/*Нижняя панель*/}
             <View style={styles.bottomMenu}>
 
@@ -101,21 +131,7 @@ export default function App() {
                         value={inputText}
                     />
                     <Pressable style={styles.addButton} onPress={addTask} >
-                        <Text style={styles.addButtonText}>+</Text>
-                    </Pressable>
-                </View>
-
-                <View style={styles.bottomMenuButtons}>
-                    <Pressable style={[styles.menuButton, filterValue === 'all' && styles.menuButtonActive]} onPress={()=> setFilterValue('all')}>
-                        <Text style={[styles.menuButtonText, filterValue === 'all' && styles.menuButtonTextActive]}> Общий </Text>
-                    </Pressable>
-
-                    <Pressable style={[styles.menuButton, filterValue === 'completed' && styles.menuButtonActive]} onPress={()=> setFilterValue('completed')}>
-                        <Text style={[styles.menuButtonText, filterValue ==='completed' && styles.menuButtonTextActive]}>Выполненные</Text>
-                    </Pressable>
-
-                    <Pressable style={[styles.menuButton, filterValue === 'uncompleted' && styles.menuButtonActive]} onPress={()=> setFilterValue('uncompleted')}>
-                        <Text style={[styles.menuButtonText, filterValue ==='uncompleted' && styles.menuButtonTextActive]}>Невыполненные</Text>
+                        <FontAwesome6 name="folder-plus" size={24} color="white" />
                     </Pressable>
                 </View>
 
@@ -136,7 +152,7 @@ const styles = StyleSheet.create({
     scrollContent: {
         paddingTop: 60,
         paddingHorizontal: 20,
-        paddingBottom: 120,
+        paddingBottom: 220,
     },
 
     bottomMenu: {
@@ -146,7 +162,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#161B22',
         borderTopWidth: 1,
         borderTopColor: '#21262D',
-        paddingVertical: 40,
+        paddingTop: 16,
+        // paddingBottom: ,
         paddingHorizontal: 20,
     },
 
@@ -182,25 +199,46 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
 
+    filterBar: {
+        position: 'absolute',
+        bottom: 140,
+        width: '100%',
+        paddingHorizontal: 20,
+    },
+
     bottomMenuButtons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-    },
-
-    menuButton: {
-        flex: 1,
-        marginHorizontal: 5,
-        paddingVertical: 10,
+        backgroundColor: '#161B22',
         borderRadius: 10,
-        backgroundColor: '#0D1117',
-        alignItems: 'center',
+        padding: 8,
         borderWidth: 1,
         borderColor: '#21262D',
     },
 
-    menuButtonActive: {
+    menuButton: {
+        width: '30%',
+        flex: 1,
+        marginHorizontal: 5,
+        paddingVertical: 10,
+        borderRadius: 6,
+        backgroundColor: '#0D1117',
+        alignItems: 'center',
+        // borderWidth: 1,
+        borderColor: '#21262D',
+    },
+
+    menuButtonAll: {
         backgroundColor: ACCENT,
         borderColor: ACCENT,
+    },
+    menuButtonCompleted:{
+        backgroundColor: '#3FB950',
+        borderColor: '#3FB950',
+    },
+    menuButtonUncompleted: {
+        backgroundColor: '#F85149',
+        borderColor: '#F85149',
     },
 
     menuButtonText: {

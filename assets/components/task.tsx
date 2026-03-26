@@ -1,4 +1,5 @@
 import {StyleSheet, Text, View, Pressable} from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function Task({ title, onToggle, handleLongPress,status }) {
     return (
@@ -9,10 +10,8 @@ export default function Task({ title, onToggle, handleLongPress,status }) {
             <View style={styles.leftSection}>
                 <Text style={[styles.text, status===true && styles.textDone]}>{title}</Text>
             </View>
-            <Pressable onPress={onToggle}>
-                <View style={[styles.checkbox, status === true && styles.checked]}>
-                    {status===true && <Text style={styles.checked}>✓</Text>}
-                </View>
+            <Pressable onPress={onToggle} style={[styles.checkbox, status===true && styles.checked ]}>
+                <Ionicons name="checkmark" size={24} color={status ? 'white' : 'transparent'} />
             </Pressable>
         </Pressable>
     );
