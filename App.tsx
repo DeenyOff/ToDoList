@@ -1,24 +1,31 @@
-import {StyleSheet, View, ScrollView, TextInput, Pressable, Text, Alert} from 'react-native';
+ // React Компоненты
+import { StyleSheet, View, ScrollView, TextInput, Pressable, Text, Alert } from 'react-native';
+import {SafeAreaProvider, SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
+
+// Компоненты
 import Task from "./assets/components/task";
-import {useState} from "react";
+import Header from "./assets/components/header";
+
+import { useState } from "react";
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 
-
 export default function App() {
-    const [tasks, setlistOfTasks] = useState([])
-    const [inputText, setInputText] = useState('')
+    const [tasks, setlistOfTasks] = useState([]); //Динамический список задач + метод его изменения
+    const [inputText, setInputText] = useState(''); //inputTask хранит в себе введенную задачу + setInputText для ее изменения
+    const [filterValue, setFilterValue] = useState('all'); // Для хранения состояния переменной filter чтобы фильтровать список при помощи кнопок
+    const insets = useSafeAreaInsets();
 
     // Добавление новой задачи
     const addTask = () => {
+        if (inputText.trim() === "") return;
 
-        if (inputText.trim() === "") return; // Проверка на пустой массив
         setlistOfTasks([
             ...tasks,
-            {title: inputText, id: Date.now(), status: false}
-
+            { title: inputText, id: Date.now(), status: false }
         ]);
-        setInputText('');//Очистка поля ввода после добавленного задания
-    }
+
+        setInputText('');
+    };
 
     // Удаление задачи из списка
     const removeTask = (id) => {
@@ -26,65 +33,64 @@ export default function App() {
             "Удалить задачу?",
             "Действительно удалить?",
             [
-                {text: 'Нет'},
-                {text: 'Да', onPress: () => {
+                { text: 'Нет' },
+                {
+                    text: 'Да',
+                    onPress: () => {
                         setlistOfTasks(
                             tasks.filter((task) => task.id !== id)
-                        )
+                        );
                     }
                 }
             ]
-        )
-    }
+        );
+    };
 
     // Изменение статуса задачи
     const changeStatus = (id) => {
         setlistOfTasks(
             tasks.map((task) => {
                 if (task.id === id) {
-                    return{
+                    return {
                         ...task,
                         status: !task.status,
-                    }
+                    };
+                } else {
+                    return task;
                 }
-                else {return task}
             })
-        )
-    }
+        );
+    };
 
-
-    const [filterValue, setFilterValue] = useState('all')
-    // У меня будет переменная которая будет уже хранить в себе отфильтрованный список.
-    let filteredTasks = tasks
+    // Отфильтрованный список
+    let filteredTasks = tasks;
 
     if (filterValue === 'completed') {
-        filteredTasks = tasks.filter(task => task.status)
+        filteredTasks = tasks.filter(task => task.status);
     }
 
     if (filterValue === 'uncompleted') {
-        filteredTasks = tasks.filter(task => !task.status)
+        filteredTasks = tasks.filter(task => !task.status);
     }
 
-
-
     return (
-        <View style={styles.container}>
-
-            {/*Список*/}
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-
-                {/*Автономный вывод всего списка. Написан в {} так как TSX/JSX не воспринимает js код без скобок*/}
-                {/*сначала был tasks, теперь стал filtredTasks т.к мы выводим переменную в которой уже отфильтрованный список*/}
+        <SafeAreaView style={styles.container} edges={['top']}>
+            <Header />
+            <ScrollView
+                contentContainerStyle={[
+                    styles.scrollContent,
+                    { paddingTop: insets.top + 16 }
+                ]}
+            >
                 {filteredTasks.map((task) => (
                     <Task
                         key={task.id}
                         title={task.title}
                         status={task.status}
                         onToggle={() => changeStatus(task.id)}
-                        handleLongPress={()=> removeTask(task.id)}
+                        handleLongPress={() => removeTask(task.id)}
                     />
                 ))}
-
             </ScrollView>
 
             {/* Панель фильтров */}
@@ -119,9 +125,8 @@ export default function App() {
                 </View>
             </View>
 
-            {/*Нижняя панель*/}
+            {/* Нижняя панель */}
             <View style={styles.bottomMenu}>
-
                 <View style={styles.bottomMenuInput}>
                     <TextInput
                         style={styles.input}
@@ -130,14 +135,12 @@ export default function App() {
                         onChangeText={setInputText}
                         value={inputText}
                     />
-                    <Pressable style={styles.addButton} onPress={addTask} >
+                    <Pressable style={styles.addButton} onPress={addTask}>
                         <FontAwesome6 name="folder-plus" size={24} color="white" />
                     </Pressable>
                 </View>
-
             </View>
-
-        </View>
+        </SafeAreaView>
     );
 }
 
@@ -150,7 +153,6 @@ const styles = StyleSheet.create({
     },
 
     scrollContent: {
-        paddingTop: 60,
         paddingHorizontal: 20,
         paddingBottom: 220,
     },
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 1,
         borderTopColor: '#21262D',
         paddingTop: 16,
-        // paddingBottom: ,
+        paddingBottom: 16,
         paddingHorizontal: 20,
     },
 
@@ -174,7 +176,6 @@ const styles = StyleSheet.create({
         borderRadius: 14,
         paddingHorizontal: 15,
         paddingVertical: 10,
-        marginBottom: 40,
         borderWidth: 1,
         borderColor: '#21262D',
     },
@@ -193,15 +194,9 @@ const styles = StyleSheet.create({
         paddingVertical: 6,
     },
 
-    addButtonText: {
-        color: '#fff',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-
     filterBar: {
         position: 'absolute',
-        bottom: 140,
+        bottom: 90,
         width: '100%',
         paddingHorizontal: 20,
     },
@@ -224,7 +219,6 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         backgroundColor: '#0D1117',
         alignItems: 'center',
-        // borderWidth: 1,
         borderColor: '#21262D',
     },
 
@@ -232,10 +226,12 @@ const styles = StyleSheet.create({
         backgroundColor: ACCENT,
         borderColor: ACCENT,
     },
-    menuButtonCompleted:{
+
+    menuButtonCompleted: {
         backgroundColor: '#3FB950',
         borderColor: '#3FB950',
     },
+
     menuButtonUncompleted: {
         backgroundColor: '#F85149',
         borderColor: '#F85149',
