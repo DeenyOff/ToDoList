@@ -16,6 +16,7 @@ export default function App() {
     const [filterValue, setFilterValue] = useState('all'); // Для хранения состояния переменной filter чтобы фильтровать список при помощи кнопок
     const insets = useSafeAreaInsets();
 
+
     // Добавление новой задачи
     const addTask = () => {
         if (inputText.trim() === "") return;
@@ -65,6 +66,7 @@ export default function App() {
 
     // Отфильтрованный список
     let filteredTasks = tasks;
+    const isEmpty = filteredTasks.length === 0; // Переменная хранит значение true/false в зависимости от того пустой список или нет
 
     if (filterValue === 'completed') {
         filteredTasks = tasks.filter(task => task.status);
@@ -78,7 +80,12 @@ export default function App() {
         <SafeAreaView style={styles.container} edges={['top']}>
             <Header tasks={tasks} />
             <ScrollView contentContainerStyle={styles.scrollContent}>
-                {filteredTasks.map((task) => (
+                {tasks.length === 0 ? (
+                    <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
+                        <Text style={{color:'#8B949E', fontSize: 20}}>📭 Пока пусто</Text>
+                        <Text style={{color:'#8B949E', fontSize: 20}}>Добавьте новую задачу✍️</Text>
+                    </View>
+                ) : ( filteredTasks.map((task) => (
                     <Task
                         key={task.id}
                         title={task.title}
@@ -86,7 +93,7 @@ export default function App() {
                         onToggle={() => changeStatus(task.id)}
                         handleLongPress={() => removeTask(task.id)}
                     />
-                ))}
+                )))}
             </ScrollView>
 
             {/* Панель фильтров */}
@@ -151,6 +158,7 @@ const styles = StyleSheet.create({
     scrollContent: {
         paddingHorizontal: 20,
         paddingBottom: 220,
+        flexGrow: 1,
     },
 
     bottomMenu: {
