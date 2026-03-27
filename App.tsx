@@ -7,7 +7,8 @@ import Task from "./assets/components/task";
 import Header from "./assets/components/header";
 
 import { useState } from "react";
-import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function App() {
     const [tasks, setlistOfTasks] = useState([]); //Динамический список задач + метод его изменения
@@ -75,13 +76,8 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.container} edges={['top']}>
-            <Header />
-            <ScrollView
-                contentContainerStyle={[
-                    styles.scrollContent,
-                    { paddingTop: insets.top + 16 }
-                ]}
-            >
+            <Header tasks={tasks} />
+            <ScrollView contentContainerStyle={styles.scrollContent}>
                 {filteredTasks.map((task) => (
                     <Task
                         key={task.id}
@@ -136,7 +132,7 @@ export default function App() {
                         value={inputText}
                     />
                     <Pressable style={styles.addButton} onPress={addTask}>
-                        <FontAwesome6 name="folder-plus" size={24} color="white" />
+                        <Text>+</Text>
                     </Pressable>
                 </View>
             </View>
