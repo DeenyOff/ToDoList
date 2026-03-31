@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Entypo, FontAwesome6, Octicons } from '@expo/vector-icons';
 
-export default function Header({ tasks }) {
+export default function Header({ tasks, onOpenSettings  }) {
     const completed = tasks.filter(task => task.status).length;
 
     return (
@@ -28,7 +28,7 @@ export default function Header({ tasks }) {
                     <FontAwesome6 name="folder-plus" size={20} color="#8B949E" />
                 </Pressable>
 
-                <Pressable style={styles.iconBtn}>
+                <Pressable style={styles.iconBtn} onPress={onOpenSettings}>
                     <Entypo name="dots-three-horizontal" size={20} color="#8B949E" />
                 </Pressable>
 

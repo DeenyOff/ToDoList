@@ -19,7 +19,11 @@ export default function SettingsScreen() {
                     <Text style={styles.cardTitle}>Тема</Text>
 
                     <Pressable style={styles.option}>
-                        <Text style={styles.optionText}>🌙 Тёмная</Text>
+                        <View>
+                            <Text style={styles.optionText}>🌙 Тёмная</Text>
+                            <></>
+                        </View>
+
                     </Pressable>
 
                     <Pressable style={styles.option}>

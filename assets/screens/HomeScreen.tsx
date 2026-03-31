@@ -10,7 +10,7 @@ import FilterBar from "../components/filterButtons";
 import { useState } from "react";
 
 
-export default function App() {
+export default function HomeScreen({navigation}) {
     const [tasks, setlistOfTasks] = useState([]); //Динамический список задач + метод его изменения
     const [inputText, setInputText] = useState(''); //inputTask хранит в себе введенную задачу + setInputText для ее изменения
     const [filterValue, setFilterValue] = useState('all'); // Для хранения состояния переменной filter чтобы фильтровать список при помощи кнопок
@@ -76,7 +76,7 @@ export default function App() {
 
     return (
         <SafeAreaView style={styles.container} edges={['top']}>
-            <Header tasks={tasks} />
+            <Header tasks={tasks} onOpenSettings={()=> navigation.navigate('Settings')}/>
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 {tasks.length === 0 ? (
                     <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
