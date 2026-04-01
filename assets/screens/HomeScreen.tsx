@@ -1,27 +1,21 @@
-// React Компоненты
 import { StyleSheet, View, ScrollView, TextInput, Pressable, Text, Alert } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 
-// Компоненты
 import Task from '../components/task';
 import Header from "../components/header";
 import FilterBar from "../components/filterButtons";
 
-// Темы
 import { useTheme } from '../theme/ThemeContext';
-
 import { useState } from "react";
 
+export default function HomeScreen({ navigation }) {
+    const [tasks, setlistOfTasks] = useState([]);
+    const [inputText, setInputText] = useState('');
+    const [filterValue, setFilterValue] = useState('all');
 
+    const { theme } = useTheme();
+    const insets = useSafeAreaInsets();
 
-export default function HomeScreen({navigation}) {
-    const [tasks, setlistOfTasks] = useState([]); //Динамический список задач + метод его изменения
-    const [inputText, setInputText] = useState(''); //inputTask хранит в себе введенную задачу + setInputText для ее изменения
-    const [filterValue, setFilterValue] = useState('all'); // Для хранения состояния переменной filter чтобы фильтровать список при помощи кнопок
-    const {theme}  = useTheme();
-
-
-    // Добавление новой задачи
     const addTask = () => {
         if (inputText.trim() === "") return;
 
@@ -33,7 +27,6 @@ export default function HomeScreen({navigation}) {
         setInputText('');
     };
 
-    // Удаление задачи из списка
     const removeTask = (id) => {
         Alert.alert(
             "Удалить задачу?",
@@ -43,32 +36,23 @@ export default function HomeScreen({navigation}) {
                 {
                     text: 'Да',
                     onPress: () => {
-                        setlistOfTasks(
-                            tasks.filter((task) => task.id !== id)
-                        );
+                        setlistOfTasks(tasks.filter((task) => task.id !== id));
                     }
                 }
             ]
         );
     };
 
-    // Изменение статуса задачи
     const changeStatus = (id) => {
         setlistOfTasks(
-            tasks.map((task) => {
-                if (task.id === id) {
-                    return {
-                        ...task,
-                        status: !task.status,
-                    };
-                } else {
-                    return task;
-                }
-            })
+            tasks.map((task) =>
+                task.id === id
+                    ? { ...task, status: !task.status }
+                    : task
+            )
         );
     };
 
-    // Отфильтрованный список
     let filteredTasks = tasks;
 
     if (filterValue === 'completed') {
@@ -79,44 +63,76 @@ export default function HomeScreen({navigation}) {
         filteredTasks = tasks.filter(task => !task.status);
     }
 
+    const bottomMenuHeight = 84 + insets.bottom;
+    const filterBarBottom = bottomMenuHeight + 12;
+    const scrollBottomSpace = bottomMenuHeight + 70;
+
     return (
-        <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]} edges={['top']}>
-            <Header tasks={tasks} onOpenSettings={()=> navigation.navigate('Settings')}/>
-            <ScrollView contentContainerStyle={styles.scrollContent}>
-                {tasks.length === 0 ? (
-                    <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
-                        <Text style={{color: theme.text, fontSize: 20}}>📭 Пока пусто</Text>
-                        <Text style={{color: theme.text, fontSize: 20}}>Добавьте новую задачу✍️</Text>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background }]} edges={['top', 'bottom']}>
+            <Header tasks={tasks} onOpenSettings={() => navigation.navigate('Settings')} />
+
+            <ScrollView
+                contentContainerStyle={[
+                    styles.scrollContent,
+                    { paddingBottom: scrollBottomSpace }
+                ]}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+            >
+                {filteredTasks.length === 0 ? (
+                    <View style={styles.emptyState}>
+                        <Text style={[styles.emptyTitle, { color: theme.text }]}>📭 Пока пусто</Text>
+                        <Text style={[styles.emptySubtitle, { color: theme.subtext }]}>
+                            Добавьте новую задачу
+                        </Text>
                     </View>
-                ) : ( filteredTasks.map((task) => (
-                    <Task
-                        key={task.id}
-                        title={task.title}
-                        status={task.status}
-                        onToggle={() => changeStatus(task.id)}
-                        handleLongPress={() => removeTask(task.id)}
-                    />
-                )))}
+                ) : (
+                    filteredTasks.map((task) => (
+                        <Task
+                            key={task.id}
+                            title={task.title}
+                            status={task.status}
+                            onToggle={() => changeStatus(task.id)}
+                            handleLongPress={() => removeTask(task.id)}
+                        />
+                    ))
+                )}
             </ScrollView>
 
-            {/* Панель фильтров */}
             <FilterBar
                 filterValue={filterValue}
                 setFilterValue={setFilterValue}
+                bottomOffset={filterBarBottom}
             />
 
-            {/* Нижняя панель */}
-            <View style={[styles.bottomMenu, {backgroundColor: theme.surface, borderColor: theme.border}]}>
-                <View style={[styles.bottomMenuInput, {backgroundColor: theme.input, borderColor: theme.border}]}>
+            <View
+                style={[
+                    styles.bottomMenu,
+                    {
+                        backgroundColor: theme.surface,
+                        borderColor: theme.border,
+                        paddingBottom: insets.bottom + 10
+                    }
+                ]}
+            >
+                <View
+                    style={[
+                        styles.bottomMenuInput,
+                        {
+                            backgroundColor: theme.input,
+                            borderColor: theme.border
+                        }
+                    ]}
+                >
                     <TextInput
-                        style={styles.input}
+                        style={[styles.input, { color: theme.text }]}
                         placeholder="Введите текст..."
-                        placeholderTextColor="#6E7681"
+                        placeholderTextColor={theme.subtext}
                         onChangeText={setInputText}
                         value={inputText}
                     />
-                    <Pressable style={styles.addButton} onPress={addTask}>
-                        <Text>+</Text>
+                    <Pressable style={[styles.addButton, { backgroundColor: theme.accent }]} onPress={addTask}>
+                        <Text style={styles.addButtonText}>+</Text>
                     </Pressable>
                 </View>
             </View>
@@ -124,18 +140,32 @@ export default function HomeScreen({navigation}) {
     );
 }
 
-const ACCENT = '#4F8CFF';
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // backgroundColor: theme.background,
     },
 
     scrollContent: {
         paddingHorizontal: 20,
-        paddingBottom: 220,
         flexGrow: 1,
+    },
+
+    emptyState: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingHorizontal: 20,
+    },
+
+    emptyTitle: {
+        fontSize: 22,
+        fontWeight: '600',
+        marginBottom: 6,
+    },
+
+    emptySubtitle: {
+        fontSize: 16,
+        textAlign: 'center',
     },
 
     bottomMenu: {
@@ -143,8 +173,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         width: '100%',
         borderTopWidth: 1,
-        paddingTop: 16,
-        paddingBottom: 16,
+        paddingTop: 12,
         paddingHorizontal: 20,
     },
 
@@ -155,19 +184,27 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 10,
         borderWidth: 1,
+        minHeight: 56,
     },
 
     input: {
         flex: 1,
-        color: '#E6EDF3',
         fontSize: 16,
     },
 
     addButton: {
         marginLeft: 10,
-        backgroundColor: ACCENT,
-        borderRadius: 6,
-        paddingHorizontal: 12,
-        paddingVertical: 6,
+        borderRadius: 10,
+        minWidth: 44,
+        minHeight: 44,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    addButtonText: {
+        color: 'white',
+        fontSize: 22,
+        fontWeight: '700',
+        lineHeight: 22,
     }
 });

@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
     headerMenu: {
         flexDirection: "row",
         justifyContent: "space-between",
+        alignItems: "center",
         marginBottom: 20,
     },
 

@@ -65,7 +65,7 @@ export default function SettingsScreen() {
                 {/* Блок инфы */}
                 <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
                     <Text style={[styles.cardTitle, {color: theme.text}]}>О приложении</Text>
-                    <Text style={[styles.infoText, {color: theme.subtext}]}>Версия 1.1</Text>
+                    <Text style={[styles.infoText, {color: theme.subtext}]}>Версия 1.2</Text>
                 </View>
 
             </View>

@@ -1,6 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import { useTheme } from "./assets/theme/ThemeContext";
 
 import HomeScreen from './assets/screens/HomeScreen';
 import SettingsScreen from './assets/screens/SettingsScreen';
@@ -13,6 +14,7 @@ type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function App() {
+    const {theme} = useTheme();
     return (
         <NavigationContainer>
             <Stack.Navigator>
@@ -23,9 +25,9 @@ export default function App() {
                     options={{
                         title: 'Настройки',
                         headerStyle: {
-                            backgroundColor: '#161B22',
+                            backgroundColor: theme.background,
                         },
-                        headerTintColor: '#E6EDF3',
+                        headerTintColor: theme.text,
                         headerTitleStyle: {
                             fontWeight: '700',
                         },

@@ -34,7 +34,7 @@ export default function Task({ title, onToggle, handleLongPress,status }) {
                         backgroundColor: status ? theme.accent : theme.card,
                     }
                 ]}>
-                <Ionicons name="checkmark" size={24} color={status ? 'white' : 'transparent'} />
+                <Ionicons name="checkmark" size={24} color={status ? 'white' : theme.card} />
             </Pressable>
         </Pressable>
     );

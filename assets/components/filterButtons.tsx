@@ -1,14 +1,17 @@
-import {Pressable, StyleSheet, Text, View} from "react-native";
-import {useTheme} from "../theme/ThemeContext";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useTheme } from "../theme/ThemeContext";
 
-
-export default function FilterBar({filterValue, setFilterValue}) {
-
-    const {theme} = useTheme();
+export default function FilterBar({ filterValue, setFilterValue, bottomOffset = 96 }) {
+    const { theme } = useTheme();
 
     return (
-        <View style={styles.filterBar}>
-            <View style={[styles.bottomMenuButtons, {backgroundColor: theme.surface, borderColor: theme.border}]}>
+        <View style={[styles.filterBar, { bottom: bottomOffset }]}>
+            <View
+                style={[
+                    styles.bottomMenuButtons,
+                    { backgroundColor: theme.surface, borderColor: theme.border }
+                ]}
+            >
                 <Pressable
                     style={[
                         styles.menuButton,
@@ -21,7 +24,14 @@ export default function FilterBar({filterValue, setFilterValue}) {
                     ]}
                     onPress={() => setFilterValue('all')}
                 >
-                    <Text style={[styles.menuButtonText, filterValue === 'all' && styles.menuButtonTextActive]}>
+                    <Text
+                        numberOfLines={1}
+                        adjustsFontSizeToFit
+                        style={[
+                            styles.menuButtonText,
+                            { color: filterValue === 'all' ? 'white' : theme.subtext }
+                        ]}
+                    >
                         Все
                     </Text>
                 </Pressable>
@@ -38,7 +48,14 @@ export default function FilterBar({filterValue, setFilterValue}) {
                     ]}
                     onPress={() => setFilterValue('completed')}
                 >
-                    <Text style={[styles.menuButtonText, filterValue === 'completed' && styles.menuButtonTextActive]}>
+                    <Text
+                        numberOfLines={1}
+                        adjustsFontSizeToFit
+                        style={[
+                            styles.menuButtonText,
+                            { color: filterValue === 'completed' ? 'white' : theme.subtext }
+                        ]}
+                    >
                         Выполнено
                     </Text>
                 </Pressable>
@@ -55,20 +72,25 @@ export default function FilterBar({filterValue, setFilterValue}) {
                     ]}
                     onPress={() => setFilterValue('uncompleted')}
                 >
-                    <Text style={[styles.menuButtonText, filterValue === 'uncompleted' && styles.menuButtonTextActive]}>
+                    <Text
+                        numberOfLines={1}
+                        adjustsFontSizeToFit
+                        style={[
+                            styles.menuButtonText,
+                            { color: filterValue === 'uncompleted' ? 'white' : theme.subtext }
+                        ]}
+                    >
                         Не выполнено
                     </Text>
                 </Pressable>
             </View>
         </View>
-    )
+    );
 }
-const ACCENT = '#4F8CFF';
-const styles = StyleSheet.create({
 
+const styles = StyleSheet.create({
     filterBar: {
         position: 'absolute',
-        bottom: 90,
         width: '100%',
         paddingHorizontal: 20,
     },
@@ -76,28 +98,24 @@ const styles = StyleSheet.create({
     bottomMenuButtons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderRadius: 10,
+        borderRadius: 12,
         padding: 8,
         borderWidth: 1,
-        borderColor: '#21262D',
     },
 
     menuButton: {
-        width: '30%',
         flex: 1,
-        marginHorizontal: 5,
+        marginHorizontal: 4,
         paddingVertical: 10,
-        borderRadius: 6,
+        borderRadius: 8,
+        minHeight: 44,
         alignItems: 'center',
+        justifyContent: 'center',
     },
 
     menuButtonText: {
-        color: '#8B949E',
-        fontSize: 13,
-    },
-
-    menuButtonTextActive: {
-        color: 'white',
+        fontSize: 12,
+        textAlign: 'center',
         fontWeight: '600',
     }
 });
