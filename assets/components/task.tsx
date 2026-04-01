@@ -1,28 +1,49 @@
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import {useTheme} from "../theme/ThemeContext";
 
 export default function Task({ title, onToggle, handleLongPress,status }) {
+
+    const {theme} = useTheme();
+
     return (
         <Pressable
-            style={styles.task}
+            style={[styles.task, {backgroundColor: theme.card, borderColor: theme.border}]}
             onLongPress={handleLongPress}
         >
             <View style={styles.leftSection}>
-                <Text style={[styles.text, status===true && styles.textDone]}>{title}</Text>
+                <Text
+                    style={[
+                        styles.text,
+                        {
+                            color: status ? theme.subtext : theme.text,
+                            opacity: status ? 0.7 : 1
+                        },
+                        status && styles.textDone
+                    ]}
+                >
+                    {title}
+                </Text>
             </View>
-            <Pressable onPress={onToggle} style={[styles.checkbox, status===true && styles.checked ]}>
+            <Pressable
+                onPress={onToggle}
+                style={[
+                    styles.checkbox,
+                    {
+                        borderColor: theme.accent,
+                        backgroundColor: status ? theme.accent : theme.card,
+                    }
+                ]}>
                 <Ionicons name="checkmark" size={24} color={status ? 'white' : 'transparent'} />
             </Pressable>
         </Pressable>
     );
 }
 
-const ACCENT = '#4F8CFF';
 
 const styles = StyleSheet.create({
     task: {
         width: '100%',
-        backgroundColor: '#161B22',
         borderRadius: 16,
         marginBottom: 12,
         paddingVertical: 30,
@@ -46,27 +67,23 @@ const styles = StyleSheet.create({
         height: 27,
         borderRadius: 6,
         borderWidth: 2,
-        borderColor: ACCENT,
         marginLeft: 30,
         justifyContent: 'center',
         alignItems: 'center'
     },
 
     checked: {
-        backgroundColor: ACCENT,
         color: 'white',
         fontSize: 16,
         fontWeight: 'bold',
     },
 
     text: {
-        color: '#E6EDF3',
         fontSize: 16,
         fontWeight: '500',
         flexShrink: 1,
     },
     textDone: {
-        color: 'grey',
         textDecorationLine: 'line-through',
         fontWeight: 'normal',
     }

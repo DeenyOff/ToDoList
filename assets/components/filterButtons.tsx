@@ -1,12 +1,24 @@
 import {Pressable, StyleSheet, Text, View} from "react-native";
+import {useTheme} from "../theme/ThemeContext";
 
 
 export default function FilterBar({filterValue, setFilterValue}) {
+
+    const {theme} = useTheme();
+
     return (
         <View style={styles.filterBar}>
-            <View style={styles.bottomMenuButtons}>
+            <View style={[styles.bottomMenuButtons, {backgroundColor: theme.surface, borderColor: theme.border}]}>
                 <Pressable
-                    style={[styles.menuButton, filterValue === 'all' && styles.menuButtonAll]}
+                    style={[
+                        styles.menuButton,
+                        {
+                            backgroundColor:
+                                filterValue === 'all'
+                                    ? theme.accent
+                                    : theme.button
+                        }
+                    ]}
                     onPress={() => setFilterValue('all')}
                 >
                     <Text style={[styles.menuButtonText, filterValue === 'all' && styles.menuButtonTextActive]}>
@@ -15,7 +27,15 @@ export default function FilterBar({filterValue, setFilterValue}) {
                 </Pressable>
 
                 <Pressable
-                    style={[styles.menuButton, filterValue === 'completed' && styles.menuButtonCompleted]}
+                    style={[
+                        styles.menuButton,
+                        {
+                            backgroundColor:
+                                filterValue === 'completed'
+                                    ? theme.success
+                                    : theme.button
+                        }
+                    ]}
                     onPress={() => setFilterValue('completed')}
                 >
                     <Text style={[styles.menuButtonText, filterValue === 'completed' && styles.menuButtonTextActive]}>
@@ -24,7 +44,15 @@ export default function FilterBar({filterValue, setFilterValue}) {
                 </Pressable>
 
                 <Pressable
-                    style={[styles.menuButton, filterValue === 'uncompleted' && styles.menuButtonUncompleted]}
+                    style={[
+                        styles.menuButton,
+                        {
+                            backgroundColor:
+                                filterValue === 'uncompleted'
+                                    ? theme.danger
+                                    : theme.button
+                        }
+                    ]}
                     onPress={() => setFilterValue('uncompleted')}
                 >
                     <Text style={[styles.menuButtonText, filterValue === 'uncompleted' && styles.menuButtonTextActive]}>
@@ -48,7 +76,6 @@ const styles = StyleSheet.create({
     bottomMenuButtons: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: '#161B22',
         borderRadius: 10,
         padding: 8,
         borderWidth: 1,
@@ -61,24 +88,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         paddingVertical: 10,
         borderRadius: 6,
-        backgroundColor: '#0D1117',
         alignItems: 'center',
-        borderColor: '#21262D',
-    },
-
-    menuButtonAll: {
-        backgroundColor: ACCENT,
-        borderColor: ACCENT,
-    },
-
-    menuButtonCompleted: {
-        backgroundColor: '#3FB950',
-        borderColor: '#3FB950',
-    },
-
-    menuButtonUncompleted: {
-        backgroundColor: '#F85149',
-        borderColor: '#F85149',
     },
 
     menuButtonText: {
@@ -87,7 +97,7 @@ const styles = StyleSheet.create({
     },
 
     menuButtonTextActive: {
-        color: '#fff',
+        color: 'white',
         fontWeight: '600',
     }
 });

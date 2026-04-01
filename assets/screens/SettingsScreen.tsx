@@ -1,39 +1,59 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useTheme } from "../theme/ThemeContext";
+
+
 export default function SettingsScreen() {
+    const { theme, themeMode, setThemeMode } = useTheme();
+
     return (
-        <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+        <SafeAreaView style={[styles.container, { backgroundColor: theme.background}]} edges={['top', 'bottom']}>
 
             {/* Заголовок */}
             <View style={styles.header}>
-                <Text style={styles.title}>Настройки ⚙️</Text>
-                <Text style={styles.subtitle}>Настрой приложение под себя</Text>
+                <Text style={[styles.title, {color: theme.text}]}>Настройки ⚙️</Text>
+                <Text style={[styles.subtitle, {color: theme.subtext}]}>Настрой приложение под себя</Text>
             </View>
 
             {/* Контент */}
             <View style={styles.content}>
 
                 {/* Блок темы */}
-                <View style={styles.card}>
-                    <Text style={styles.cardTitle}>Тема</Text>
+                <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                    <Text style={[styles.cardTitle, {color: theme.text}]}>Тема</Text>
 
-                    <Pressable style={styles.option}>
-                        <View>
-                            <Text style={styles.optionText}>🌙 Тёмная</Text>
-                            <></>
+                    <Pressable style={styles.option} onPress={() => setThemeMode('dark')}>
+                        <View style={styles.toggleContainer}>
+                            <Text style={[styles.optionText, {color: theme.subtext}]}>🌙 Тёмная</Text>
+                            <View style={[
+                                styles.toggleCircle,
+                                {
+                                    borderColor: theme.accent,
+                                    backgroundColor: themeMode === 'dark' ? theme.accent : 'transparent',
+                                }
+                            ]}></View>
                         </View>
 
                     </Pressable>
 
-                    <Pressable style={styles.option}>
-                        <Text style={styles.optionText}>☀️ Светлая</Text>
+                    <Pressable style={styles.option} onPress={() => setThemeMode('light')}>
+                        <View style={styles.toggleContainer}>
+                            <Text style={[styles.optionText, {color: theme.subtext}]}>☀️ Светлая</Text>
+                            <View style={[
+                                styles.toggleCircle,
+                                {
+                                    borderColor: theme.accent,
+                                    backgroundColor: themeMode === 'light' ? theme.accent : 'transparent',
+                                }
+                            ]}></View>
+                        </View>
                     </Pressable>
                 </View>
 
                 {/* Блок цвета */}
-                <View style={styles.card}>
-                    <Text style={styles.cardTitle}>Акцентный цвет</Text>
+                <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                    <Text style={[styles.cardTitle, {color: theme.text}]}>Акцентный цвет</Text>
 
                     <View style={styles.colorRow}>
                         <View style={[styles.color, { backgroundColor: '#4F8CFF' }]} />
@@ -43,9 +63,9 @@ export default function SettingsScreen() {
                 </View>
 
                 {/* Блок инфы */}
-                <View style={styles.card}>
-                    <Text style={styles.cardTitle}>О приложении</Text>
-                    <Text style={styles.infoText}>Версия 1.0</Text>
+                <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
+                    <Text style={[styles.cardTitle, {color: theme.text}]}>О приложении</Text>
+                    <Text style={[styles.infoText, {color: theme.subtext}]}>Версия 1.1</Text>
                 </View>
 
             </View>
@@ -57,7 +77,6 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#0D1117',
     },
 
     header: {
@@ -67,14 +86,12 @@ const styles = StyleSheet.create({
     },
 
     title: {
-        color: '#E6EDF3',
         fontSize: 28,
         fontWeight: '700',
         marginBottom: 6,
     },
 
     subtitle: {
-        color: '#8B949E',
         fontSize: 14,
     },
 
@@ -83,16 +100,13 @@ const styles = StyleSheet.create({
     },
 
     card: {
-        backgroundColor: '#161B22',
         borderRadius: 12,
         padding: 16,
         marginBottom: 16,
         borderWidth: 1,
-        borderColor: '#21262D',
     },
 
     cardTitle: {
-        color: '#E6EDF3',
         fontSize: 16,
         fontWeight: '600',
         marginBottom: 12,
@@ -103,7 +117,6 @@ const styles = StyleSheet.create({
     },
 
     optionText: {
-        color: '#8B949E',
         fontSize: 15,
     },
 
@@ -119,7 +132,19 @@ const styles = StyleSheet.create({
     },
 
     infoText: {
-        color: '#8B949E',
         fontSize: 14,
     },
+
+    toggleContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+
+    toggleCircle: {
+        width: 26,
+        height: 26,
+        borderWidth: 1,
+        borderRadius: 6,
+    }
 });

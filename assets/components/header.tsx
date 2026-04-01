@@ -1,7 +1,11 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Entypo, FontAwesome6, Octicons } from '@expo/vector-icons';
+import {useTheme} from "../theme/ThemeContext";
 
 export default function Header({ tasks, onOpenSettings  }) {
+
+    const { theme } = useTheme();
+
     const completed = tasks.filter(task => task.status).length;
 
     return (
@@ -10,26 +14,26 @@ export default function Header({ tasks, onOpenSettings  }) {
             {/* Верхнее меню */}
             <View>
                 {/* Заголовок */}
-                <Text style={styles.title}>Список задач</Text>
+                <Text style={[styles.title, {color: theme.text}]}>Список задач</Text>
 
                 {/* Подзаголовок (чуть UX) */}
-                <Text style={styles.subtitle}>
+                <Text style={[styles.subtitle, {color: theme.subtext}]}>
                     {completed} выполнено из {tasks.length}
                 </Text>
             </View>
 
             <View style={styles.headerMenu}>
 
-                <Pressable style={styles.iconBtn}>
-                    <Octicons name="search" size={20} color="#8B949E" />
+                <Pressable style={[styles.iconBtn, {backgroundColor: theme.surface}]}>
+                    <Octicons name="search" size={20} color={theme.icon} />
                 </Pressable>
 
-                <Pressable style={styles.iconBtn}>
-                    <FontAwesome6 name="folder-plus" size={20} color="#8B949E" />
+                <Pressable style={[styles.iconBtn, {backgroundColor: theme.surface}]}>
+                    <FontAwesome6 name="folder-plus" size={20} color={theme.icon} />
                 </Pressable>
 
-                <Pressable style={styles.iconBtn} onPress={onOpenSettings}>
-                    <Entypo name="dots-three-horizontal" size={20} color="#8B949E" />
+                <Pressable style={[styles.iconBtn, {backgroundColor: theme.surface}]} onPress={onOpenSettings}>
+                    <Entypo name="dots-three-horizontal" size={20} color={theme.icon} />
                 </Pressable>
 
             </View>
@@ -57,18 +61,15 @@ const styles = StyleSheet.create({
         padding: 10,
         marginHorizontal: 5,
         borderRadius: 8,
-        backgroundColor: '#161B22',
     },
 
     title: {
-        color: "#E6EDF3",
         fontSize: 28,
         fontWeight: "700",
         marginBottom: 6,
     },
 
     subtitle: {
-        color: "#8B949E",
         fontSize: 14,
     },
 });

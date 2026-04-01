@@ -7,13 +7,18 @@ import Task from '../components/task';
 import Header from "../components/header";
 import FilterBar from "../components/filterButtons";
 
+// Темы
+import { useTheme } from '../theme/ThemeContext';
+
 import { useState } from "react";
+
 
 
 export default function HomeScreen({navigation}) {
     const [tasks, setlistOfTasks] = useState([]); //Динамический список задач + метод его изменения
     const [inputText, setInputText] = useState(''); //inputTask хранит в себе введенную задачу + setInputText для ее изменения
     const [filterValue, setFilterValue] = useState('all'); // Для хранения состояния переменной filter чтобы фильтровать список при помощи кнопок
+    const {theme}  = useTheme();
 
 
     // Добавление новой задачи
@@ -75,13 +80,13 @@ export default function HomeScreen({navigation}) {
     }
 
     return (
-        <SafeAreaView style={styles.container} edges={['top']}>
+        <SafeAreaView style={[styles.container, {backgroundColor: theme.background}]} edges={['top']}>
             <Header tasks={tasks} onOpenSettings={()=> navigation.navigate('Settings')}/>
             <ScrollView contentContainerStyle={styles.scrollContent}>
                 {tasks.length === 0 ? (
                     <View style={{alignItems: 'center', flex: 1, justifyContent: 'center'}}>
-                        <Text style={{color:'#8B949E', fontSize: 20}}>📭 Пока пусто</Text>
-                        <Text style={{color:'#8B949E', fontSize: 20}}>Добавьте новую задачу✍️</Text>
+                        <Text style={{color: theme.text, fontSize: 20}}>📭 Пока пусто</Text>
+                        <Text style={{color: theme.text, fontSize: 20}}>Добавьте новую задачу✍️</Text>
                     </View>
                 ) : ( filteredTasks.map((task) => (
                     <Task
@@ -101,8 +106,8 @@ export default function HomeScreen({navigation}) {
             />
 
             {/* Нижняя панель */}
-            <View style={styles.bottomMenu}>
-                <View style={styles.bottomMenuInput}>
+            <View style={[styles.bottomMenu, {backgroundColor: theme.surface, borderColor: theme.border}]}>
+                <View style={[styles.bottomMenuInput, {backgroundColor: theme.input, borderColor: theme.border}]}>
                     <TextInput
                         style={styles.input}
                         placeholder="Введите текст..."
@@ -124,7 +129,7 @@ const ACCENT = '#4F8CFF';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#0D1117',
+        // backgroundColor: theme.background,
     },
 
     scrollContent: {
@@ -137,9 +142,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: '100%',
-        backgroundColor: '#161B22',
         borderTopWidth: 1,
-        borderTopColor: '#21262D',
         paddingTop: 16,
         paddingBottom: 16,
         paddingHorizontal: 20,
@@ -148,12 +151,10 @@ const styles = StyleSheet.create({
     bottomMenuInput: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#0D1117',
         borderRadius: 14,
         paddingHorizontal: 15,
         paddingVertical: 10,
         borderWidth: 1,
-        borderColor: '#21262D',
     },
 
     input: {
