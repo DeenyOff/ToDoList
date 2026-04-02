@@ -1,3 +1,4 @@
+
 export const darkTheme = {
     background: '#0D1117',      // основной фон
     card: '#161B22',            // карточки
@@ -11,7 +12,9 @@ export const darkTheme = {
     icon: '#E6EDF3',            // Иконки
     button: '#0D1117',
 
-    accent: '#4F8CFF',          // основной акцент (синий)
+    // accent: '#4F8CFF',          // основной акцент (синий)
+
+    maincolor: '#0969DA',
     success: '#3FB950',         // зелёный (выполнено)
     danger: '#F85149',          // красный (удаление)
 
@@ -33,7 +36,9 @@ export const lightTheme = {
 
     border: '#D0D7DE',          // границы
 
-    accent: '#0969DA',          // синий
+    // accent: ,          // акцентный цвет
+
+    maincolor: '#0969DA',
     success: '#1A7F37',         // зелёный
     danger: '#CF222E',          // красный
 
@@ -41,4 +46,10 @@ export const lightTheme = {
     placeholder: '#8C959F',     // placeholder
 
     pressed: '#EAECEF',         // нажатие
+};
+
+export const accentColors = {
+    blue: '#4F8CFF',
+    green: '#3FB950',
+    red: '#F85149',
 };

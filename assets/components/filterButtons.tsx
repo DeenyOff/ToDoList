@@ -42,7 +42,7 @@ export default function FilterBar({ filterValue, setFilterValue, bottomOffset = 
                         {
                             backgroundColor:
                                 filterValue === 'completed'
-                                    ? theme.success
+                                    ? theme.accent
                                     : theme.button
                         }
                     ]}
@@ -66,7 +66,7 @@ export default function FilterBar({ filterValue, setFilterValue, bottomOffset = 
                         {
                             backgroundColor:
                                 filterValue === 'uncompleted'
-                                    ? theme.danger
+                                    ? theme.accent
                                     : theme.button
                         }
                     ]}

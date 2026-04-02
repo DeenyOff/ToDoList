@@ -2,10 +2,12 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useTheme } from "../theme/ThemeContext";
+import {accentColors} from "../theme/themes";
 
 
 export default function SettingsScreen() {
-    const { theme, themeMode, setThemeMode } = useTheme();
+
+    const { theme, themeMode, setThemeMode, accentKey, setAccentKey} = useTheme();
 
     return (
         <SafeAreaView style={[styles.container, { backgroundColor: theme.background}]} edges={['top', 'bottom']}>
@@ -56,16 +58,41 @@ export default function SettingsScreen() {
                     <Text style={[styles.cardTitle, {color: theme.text}]}>Акцентный цвет</Text>
 
                     <View style={styles.colorRow}>
-                        <View style={[styles.color, { backgroundColor: '#4F8CFF' }]} />
-                        <View style={[styles.color, { backgroundColor: '#3FB950' }]} />
-                        <View style={[styles.color, { backgroundColor: '#F85149' }]} />
+
+                        <Pressable
+                            style={[
+                                accentKey === 'blue' && styles.selectedColor, {borderColor: theme.accent}
+                            ]}
+                            onPress={() => setAccentKey('blue')}
+                        >
+                            <View style={[styles.color, { backgroundColor: accentColors.blue }]} />
+                        </Pressable>
+
+                        <Pressable
+                            style={[
+                                accentKey === 'green' && styles.selectedColor, {borderColor: theme.accent}
+                            ]}
+                            onPress={() => setAccentKey('green')}
+                        >
+                            <View style={[styles.color, { backgroundColor: accentColors.green }]} />
+                        </Pressable>
+
+                        <Pressable
+                            style={[
+                                accentKey === 'red' && styles.selectedColor, {borderColor: theme.accent}
+                            ]}
+                            onPress={() => setAccentKey('red')}
+                        >
+                            <View style={[styles.color, { backgroundColor: accentColors.red }]} />
+                        </Pressable>
+
                     </View>
                 </View>
 
-                {/* Блок инфы */}
+                 {/*Блок инфы */}
                 <View style={[styles.card, { backgroundColor: theme.card, borderColor: theme.border }]}>
                     <Text style={[styles.cardTitle, {color: theme.text}]}>О приложении</Text>
-                    <Text style={[styles.infoText, {color: theme.subtext}]}>Версия 1.2</Text>
+                    <Text style={[styles.infoText, {color: theme.subtext}]}>Версия 1.3</Text>
                 </View>
 
             </View>
@@ -123,12 +150,19 @@ const styles = StyleSheet.create({
     colorRow: {
         flexDirection: 'row',
         gap: 10,
+        alignItems: 'center',
     },
 
     color: {
         width: 30,
         height: 30,
         borderRadius: 8,
+    },
+
+    selectedColor: {
+        borderWidth: 2,
+        borderRadius: 12,
+        padding: 3
     },
 
     infoText: {
@@ -145,6 +179,6 @@ const styles = StyleSheet.create({
         width: 26,
         height: 26,
         borderWidth: 1,
-        borderRadius: 6,
+        borderRadius: '100%',
     }
 });

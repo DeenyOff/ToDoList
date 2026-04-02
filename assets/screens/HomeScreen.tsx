@@ -79,7 +79,7 @@ export default function HomeScreen({ navigation }) {
                 showsVerticalScrollIndicator={false}
                 keyboardShouldPersistTaps="handled"
             >
-                {filteredTasks.length === 0 ? (
+                {tasks.length === 0 ? (
                     <View style={styles.emptyState}>
                         <Text style={[styles.emptyTitle, { color: theme.text }]}>📭 Пока пусто</Text>
                         <Text style={[styles.emptySubtitle, { color: theme.subtext }]}>
